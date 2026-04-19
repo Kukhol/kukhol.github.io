@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.kukholapps.buylists",
+      "sha256_cert_fingerprints": [
+        "16:0A:D8:7E:F5:D4:34:3D:59:A6:EF:D5:4A:6E:F4:6F:06:4E:7F:8E:63:B0:B9:A6:BF:FE:02:4A:B1:52:A9:91"
+      ]
+    }
+  }
+]
