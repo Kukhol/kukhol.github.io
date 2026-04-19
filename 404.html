@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open BuyLists</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f3d3e, #14b8a6);
+    color: white;
+    text-align: center;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  button {
+    padding: 16px 28px;
+    font-size: 18px;
+    border-radius: 12px;
+    border: none;
+    background: orange;
+    color: white;
+    font-weight: bold;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>🛒 Grocery List</h2>
+
+<button onclick="openApp()">Open in BuyLists</button>
+
+<script>
+function openApp() {
+  const id = window.location.pathname.split("/").pop();
+
+  const appUrl = "buylists://buylists-site/list/" + id;
+  const storeUrl = "https://play.google.com/store/apps/details?id=com.kukholapps.buylists";
+
+  // Try opening app using hidden iframe (best mobile support)
+  const iframe = document.createElement("iframe");
+  iframe.style.display = "none";
+  iframe.src = appUrl;
+  document.body.appendChild(iframe);
+
+  // Fallback to Play Store
+  setTimeout(() => {
+    window.location.href = storeUrl;
+  }, 1500);
+}
+
+// Auto open
+window.onload = function () {
+  setTimeout(openApp, 300);
+};
+</script>
+
+</body>
+</html>
