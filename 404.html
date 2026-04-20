@@ -1,78 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Open BuyLists</title>
-
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f3d3e, #14b8a6);
-    color: white;
-    text-align: center;
-  }
-
-  h2 {
-    margin-bottom: 20px;
-  }
-
-  button {
-    padding: 16px 28px;
-    font-size: 18px;
-    border-radius: 12px;
-    border: none;
-    background: orange;
-    color: white;
-    font-weight: bold;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Not Found</title>
 </head>
-
 <body>
 
-<h2>🛒 Grocery List</h2>
-<p>Opening your list...</p>
-
-<button onclick="openApp()">Open in BuyLists</button>
-
 <script>
-function getListId() {
   const path = window.location.pathname;
 
-  if (path.startsWith("/list/")) {
-    return path.split("/list/")[1];
+  // 🚨 IMPORTANT: allow .well-known to pass through
+  if (path.startsWith("/.well-known")) {
+    window.location.href = path;
+  } else {
+    window.location.href = "/index.html";
   }
-
-  return null;
-}
-
-function openApp() {
-  const id = getListId();
-
-  if (!id) return;
-
-  const appUrl = "buylists://list/" + id;
-  const storeUrl = "https://play.google.com/store/apps/details?id=com.kukholapps.buylists";
-
-  // Try opening app
-  window.location.href = appUrl;
-
-  // Fallback to Play Store
-  setTimeout(() => {
-    window.location.href = storeUrl;
-  }, 1800);
-}
-
-// Auto open (only fallback case)
-window.onload = function () {
-  setTimeout(openApp, 300);
-};
 </script>
 
 </body>
