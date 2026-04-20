@@ -37,29 +37,39 @@
 <body>
 
 <h2>🛒 Grocery List</h2>
+<p>Opening your list...</p>
 
 <button onclick="openApp()">Open in BuyLists</button>
 
 <script>
-function openApp() {
-  const id = window.location.pathname.split("/").pop();
+function getListId() {
+  const path = window.location.pathname;
 
-  const appUrl = "buylists://buylists-site/list/" + id;
+  if (path.startsWith("/list/")) {
+    return path.split("/list/")[1];
+  }
+
+  return null;
+}
+
+function openApp() {
+  const id = getListId();
+
+  if (!id) return;
+
+  const appUrl = "buylists://list/" + id;
   const storeUrl = "https://play.google.com/store/apps/details?id=com.kukholapps.buylists";
 
-  // Try opening app using hidden iframe (best mobile support)
-  const iframe = document.createElement("iframe");
-  iframe.style.display = "none";
-  iframe.src = appUrl;
-  document.body.appendChild(iframe);
+  // Try opening app
+  window.location.href = appUrl;
 
   // Fallback to Play Store
   setTimeout(() => {
     window.location.href = storeUrl;
-  }, 1500);
+  }, 1800);
 }
 
-// Auto open
+// Auto open (only fallback case)
 window.onload = function () {
   setTimeout(openApp, 300);
 };
