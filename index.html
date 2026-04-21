@@ -25,9 +25,16 @@
 <script>
   function getListId() {
     const path = window.location.pathname;
+    const params = new URLSearchParams(window.location.search);
 
+    // ✅ Case 1: /list/<id>
     if (path.startsWith("/list/")) {
       return path.split("/list/")[1];
+    }
+
+    // ✅ Case 2: ?rec=<id>
+    if (params.has("rec")) {
+      return params.get("rec");
     }
 
     return null;
@@ -42,14 +49,15 @@
   if (!listId) {
     status.innerText = "Invalid link";
   } else {
-    const deepLink = `buylists://list/${listId}`;
+    status.innerText = "Opening your list...";
 
-    // Button click opens app
+    const deepLink = buylists://list/${listId};
+
     btn.onclick = () => {
       window.location.href = deepLink;
     };
 
-    // Optional: auto open app after 1 sec
+    // Auto open
     setTimeout(() => {
       window.location.href = deepLink;
     }, 1000);
