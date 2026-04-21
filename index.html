@@ -20,24 +20,27 @@
     Open in BuyLists
   </button>
 
- <script>
-(function () {
-  const params = new URLSearchParams(window.location.search);
-  const redirect = params.get('redirect');
+<script>
+  function getListId() {
+    const path = window.location.pathname;
 
-  if (!redirect) return;
+    // Handles: /list/<id>
+    if (path.startsWith("/list/")) {
+      return path.split("/list/")[1];
+    }
 
-  // Extract list ID from /list/<id>
-  const match = redirect.match(/\/list\/(.+)/);
-  if (!match) return;
+    return null;
+  }
 
-  const listId = match[1];
+  const listId = getListId();
 
-  // 🔥 Redirect to HTTPS app link (App Links will open app)
-  const appLink = "https://kukhol.github.io/list/" + listId;
+  console.log("Detected List ID:", listId);
 
-  window.location.href = appLink;
-})();
+  // Update button link
+  const btn = document.getElementById("openBtn");
+  if (btn && listId) {
+    btn.href = `buylists://list/${listId}`; // deep link to app
+  }
 </script>
 
 </body>
