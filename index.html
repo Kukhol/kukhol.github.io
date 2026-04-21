@@ -1,37 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Open BuyLists</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open BuyLists</title>
 
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f3d3e, #14b8a6);
-    color: white;
-    text-align: center;
-  }
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f3d3e, #14b8a6);
+      color: white;
+      text-align: center;
+    }
 
-  h2 {
-    margin-bottom: 20px;
-  }
+    h2 {
+      margin-bottom: 10px;
+      font-size: 26px;
+    }
 
-  button {
-    padding: 16px 28px;
-    font-size: 18px;
-    border-radius: 12px;
-    border: none;
-    background: orange;
-    color: white;
-    font-weight: bold;
-  }
-</style>
+    p {
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 16px 28px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: none;
+      background: orange;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
@@ -45,6 +53,7 @@
 function getListId() {
   const path = window.location.pathname;
 
+  // Expect: /list/<id>
   if (path.startsWith("/list/")) {
     return path.split("/list/")[1];
   }
@@ -54,22 +63,27 @@ function getListId() {
 
 function openApp() {
   const id = getListId();
-
   if (!id) return;
 
+  // ✅ FINAL CORRECT DEEP LINK
   const appUrl = "buylists://list/" + id;
+
+  // Play Store fallback
   const storeUrl = "https://play.google.com/store/apps/details?id=com.kukholapps.buylists";
 
   // Try opening app
-  window.location.href = appUrl;
+  const iframe = document.createElement("iframe");
+  iframe.style.display = "none";
+  iframe.src = appUrl;
+  document.body.appendChild(iframe);
 
-  // Fallback to Play Store
+  // Fallback if app not installed
   setTimeout(() => {
     window.location.href = storeUrl;
-  }, 1800);
+  }, 1200);
 }
 
-// Auto open (only fallback case)
+// Auto-open
 window.onload = function () {
   setTimeout(openApp, 300);
 };
