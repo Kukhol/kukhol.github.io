@@ -20,46 +20,25 @@
     Open in BuyLists
   </button>
 
-  <script>
-    function getListId() {
-      const urlParams = new URLSearchParams(window.location.search);
+ <script>
+(function () {
+  const params = new URLSearchParams(window.location.search);
+  const redirect = params.get('redirect');
 
-      // Handle redirect from 404
-      const redirectPath = urlParams.get("redirect");
+  if (!redirect) return;
 
-      let path = redirectPath || window.location.pathname;
+  // Extract list ID from /list/<id>
+  const match = redirect.match(/\/list\/(.+)/);
+  if (!match) return;
 
-      if (path.startsWith("/list/")) {
-        return path.split("/list/")[1];
-      }
+  const listId = match[1];
 
-      return null;
-    }
+  // 🔥 Redirect to HTTPS app link (App Links will open app)
+  const appLink = "https://kukhol.github.io/list/" + listId;
 
-    function openApp() {
-      const id = getListId();
-      if (!id) return;
-
-      const appUrl = "buylists://list/" + id;
-      const storeUrl = "https://play.google.com/store/apps/details?id=com.kukholapps.buylists";
-
-      // Try opening app
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      iframe.src = appUrl;
-      document.body.appendChild(iframe);
-
-      // Fallback to Play Store
-      setTimeout(() => {
-        window.location.href = storeUrl;
-      }, 1200);
-    }
-
-    // Auto trigger
-    window.onload = function () {
-      setTimeout(openApp, 300);
-    };
-  </script>
+  window.location.href = appLink;
+})();
+</script>
 
 </body>
 </html>
