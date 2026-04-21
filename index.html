@@ -2,92 +2,64 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Open BuyLists</title>
-
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f3d3e, #14b8a6);
-      color: white;
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 10px;
-      font-size: 26px;
-    }
-
-    p {
-      opacity: 0.8;
-      margin-bottom: 20px;
-    }
-
-    button {
-      padding: 16px 28px;
-      font-size: 18px;
-      border-radius: 12px;
-      border: none;
-      background: orange;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  </style>
+  <title>Opening BuyLists...</title>
 </head>
+<body style="font-family: sans-serif; text-align: center; padding-top: 80px;">
 
-<body>
+  <h2>🛒 Grocery List</h2>
+  <p>Opening your list...</p>
 
-<h2>🛒 Grocery List</h2>
-<p>Opening your list...</p>
+  <button onclick="openApp()" style="
+    padding: 14px 24px;
+    font-size: 16px;
+    background: orange;
+    border: none;
+    border-radius: 10px;
+    color: white;
+  ">
+    Open in BuyLists
+  </button>
 
-<button onclick="openApp()">Open in BuyLists</button>
+  <script>
+    function getListId() {
+      const urlParams = new URLSearchParams(window.location.search);
 
-<script>
-function getListId() {
-  const path = window.location.pathname;
+      // Handle redirect from 404
+      const redirectPath = urlParams.get("redirect");
 
-  // Expect: /list/<id>
-  if (path.startsWith("/list/")) {
-    return path.split("/list/")[1];
-  }
+      let path = redirectPath || window.location.pathname;
 
-  return null;
-}
+      if (path.startsWith("/list/")) {
+        return path.split("/list/")[1];
+      }
 
-function openApp() {
-  const id = getListId();
-  if (!id) return;
+      return null;
+    }
 
-  // ✅ FINAL CORRECT DEEP LINK
-  const appUrl = "buylists://list/" + id;
+    function openApp() {
+      const id = getListId();
+      if (!id) return;
 
-  // Play Store fallback
-  const storeUrl = "https://play.google.com/store/apps/details?id=com.kukholapps.buylists";
+      const appUrl = "buylists://list/" + id;
+      const storeUrl = "https://play.google.com/store/apps/details?id=com.kukholapps.buylists";
 
-  // Try opening app
-  const iframe = document.createElement("iframe");
-  iframe.style.display = "none";
-  iframe.src = appUrl;
-  document.body.appendChild(iframe);
+      // Try opening app
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = appUrl;
+      document.body.appendChild(iframe);
 
-  // Fallback if app not installed
-  setTimeout(() => {
-    window.location.href = storeUrl;
-  }, 1200);
-}
+      // Fallback to Play Store
+      setTimeout(() => {
+        window.location.href = storeUrl;
+      }, 1200);
+    }
 
-// Auto-open
-window.onload = function () {
-  setTimeout(openApp, 300);
-};
-</script>
+    // Auto trigger
+    window.onload = function () {
+      setTimeout(openApp, 300);
+    };
+  </script>
 
 </body>
 </html>
