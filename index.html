@@ -27,12 +27,10 @@
     const path = window.location.pathname;
     const params = new URLSearchParams(window.location.search);
 
-    // ✅ Case 1: /list/<id>
     if (path.startsWith("/list/")) {
       return path.split("/list/")[1];
     }
 
-    // ✅ Case 2: ?rec=<id>
     if (params.has("rec")) {
       return params.get("rec");
     }
@@ -44,23 +42,20 @@
   const btn = document.getElementById("openBtn");
   const status = document.getElementById("status");
 
-  console.log("Detected List ID:", listId);
-
   if (!listId) {
     status.innerText = "Invalid link";
   } else {
-    status.innerText = "Opening your list...";
+    const deepLink = `buylists://list/${listId}`;
 
-    const deepLink = buylists://list/${listId};
+    status.innerText = "Tap button if app does not open";
 
     btn.onclick = () => {
       window.location.href = deepLink;
     };
 
-    // Auto open
     setTimeout(() => {
       window.location.href = deepLink;
-    }, 1000);
+    }, 800);
   }
 </script>
 
