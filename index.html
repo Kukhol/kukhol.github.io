@@ -4,18 +4,20 @@
   <meta charset="UTF-8">
   <title>Opening BuyLists...</title>
 </head>
+
 <body style="font-family: sans-serif; text-align: center; padding-top: 80px;">
 
   <h2>🛒 Grocery List</h2>
-  <p>Opening your list...</p>
+  <p id="status">Opening your list...</p>
 
-  <button onclick="openApp()" style="
+  <button id="openBtn" style="
     padding: 14px 24px;
     font-size: 16px;
     background: orange;
     border: none;
     border-radius: 10px;
     color: white;
+    cursor: pointer;
   ">
     Open in BuyLists
   </button>
@@ -24,7 +26,6 @@
   function getListId() {
     const path = window.location.pathname;
 
-    // Handles: /list/<id>
     if (path.startsWith("/list/")) {
       return path.split("/list/")[1];
     }
@@ -33,13 +34,25 @@
   }
 
   const listId = getListId();
+  const btn = document.getElementById("openBtn");
+  const status = document.getElementById("status");
 
   console.log("Detected List ID:", listId);
 
-  // Update button link
-  const btn = document.getElementById("openBtn");
-  if (btn && listId) {
-    btn.href = `buylists://list/${listId}`; // deep link to app
+  if (!listId) {
+    status.innerText = "Invalid link";
+  } else {
+    const deepLink = `buylists://list/${listId}`;
+
+    // Button click opens app
+    btn.onclick = () => {
+      window.location.href = deepLink;
+    };
+
+    // Optional: auto open app after 1 sec
+    setTimeout(() => {
+      window.location.href = deepLink;
+    }, 1000);
   }
 </script>
 
